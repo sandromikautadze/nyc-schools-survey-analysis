@@ -1,0 +1,31 @@
+---
+title: "Quality of NYC Schools - Survey Analysis"
+author: "Sandro Mikautadze"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Short introduction
+
+## What Is the Project About?
+
+- Do student, teacher and parent perceptions of NYC school quality appear to be related to demographic and academic success metrics? 
+
+- Do students, teachers, and parents have similar perceptions of NYC school quality?
+
+# Data
+
+## Raw Data
+
+## Processed Data
+
+
+
+
+
+
