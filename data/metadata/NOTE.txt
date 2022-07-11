@@ -1,0 +1,1 @@
+The 'combined' dataset was was compiled from publicly available data provided by the city of New York (https://opendata.cityofnewyork.us/data/) for this course (https://www.dataquest.io/course/r-data-cleaning/) on data cleaning in R.
