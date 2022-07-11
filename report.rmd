@@ -1,0 +1,63 @@
+---
+title: |
+  | \vspace{5cm} \LARGE Quality of NYC Schools - Survey Analysis
+author: "Sandro Mikautadze"
+date: "Last compiled on `r format(Sys.time(), '%d/%m/%Y')`"
+output:
+  pdf_document:
+    number_sections: true
+---
+
+\newpage
+\tableofcontents
+\newpage
+
+```{r setup, include=FALSE}
+source("src/00-data-processing.r", local = knitr::knit_global())
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+This is a TLDR. Enjoy!
+
+## What Is the Project About?
+
+- Do student, teacher and parent perceptions of NYC school quality appear to be related to demographic and academic success metrics? 
+
+- Do students, teachers, and parents have similar perceptions of NYC school quality?
+
+# Data
+
+## Raw Data Analysis
+
+### Initial remarks
+
+In `data\raw-data` 5 files are available: **combined.csv**, **masterfile11_gened_final.txt**, **masterfile11_gened_final.xlsx**, **masterfile11_d75_final.txt** and **masterfile11_d75_final.xlsx**.
+
+Without importing the files yet, from the *Survey-Data-Dictionary* file in `data\metadata` we can notice that **masterfile11_gened_final** and **masterfile11_d75_final** differ by a small thing: **gened** contains information on all community schools, while **d75** from all District 75 schools.
+As the Dictionary states, "these files display one line of information for each school, by DBN, that includes the response rate for each school, the number of surveys submitted, the size of the eligible survey population at each school, question scores, the percentage of responses selected, and the count of responses selected".
+
+Both files come with two different formats: *.txt* and *.xlsx*. I decide to work working with *.txt*, because the Excel version requires paid software to be visualized (i.e. Microsoft Excel). Having a look at the *.txt* datasets, we can notice that they are actually saved as tsv (tab separated value) files.
+
+The **combined** dataset has been pre-cleaned as an exercise and contains combined information on different NYC schools based on SAT, AP scores and geographical data.
+
+
+### Loading the dataset
+
+Using the `readr` under `tidyverse`, I will import the datasets as `combined`, `general` and `district`. 
+
+```{r}
+dim(combined)
+dim(general)
+dim(district)
+```
+
+
+## Processed Data
+
+
+
+
+
+
