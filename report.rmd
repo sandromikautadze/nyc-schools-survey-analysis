@@ -35,7 +35,9 @@ This is a TLDR. Enjoy!
 
 In `data\raw-data` 5 files are available: **combined.csv**, **masterfile11_gened_final.txt**, **masterfile11_gened_final.xlsx**, **masterfile11_d75_final.txt** and **masterfile11_d75_final.xlsx**.
 
-Without importing the files yet, from the *Survey-Data-Dictionary* file in `data\metadata` we can notice that **masterfile11_gened_final** and **masterfile11_d75_final** differ by a small aspect: **gened** contains information on all community schools, while **d75** from all District 75 schools.
+INSERT WHERE YOU DOWNLOADED THE FILES FROM.
+
+Without importing the files yet, from the *Survey-Data-Dictionary* file in `data\metadata` we can notice that **masterfile11_gened_final** and **masterfile11_d75_final** differ by a small aspect: **gened** contains information on all community schools, while **d75** from all District 75 schools, that is schools designed to teach and help students with disabilities.
 As the Dictionary states, "these files display one line of information for each school, by DBN, that includes the response rate for each school, the number of surveys submitted, the size of the eligible survey population at each school, question scores, the percentage of responses selected, and the count of responses selected".
 
 Both files come with two different formats: *.txt* and *.xlsx*. I decide to work working with *.txt*, because the Excel version requires paid software to be visualized (i.e. Microsoft Excel). Having a look at the *.txt* datasets, we can notice that they are actually saved as tsv (tab separated value) files.
@@ -70,19 +72,41 @@ In addition those columns contain at the end a number: 11. We need to be aware o
 
 After the above described columns, we have thousands of columns on the precise survey question and answers. 
 
-ADD INFORMATION ON COMBINED.CSV
+As far as `combined` goes, we mainly have data on SAT scores with some other info on the different groups of people attending the school, the school's position, the class size, etc. Overall, all these pieces of information might come useful, so I decide to perform no cleaning.
 
 ## Data Processing
 
-Since we don't really care about the specific survey responses that are present in pretty much all columns but the initial 32, I can say that we can exclude them. You can find the code of the "reduction" in `src/00-data-processing.r`
+Since we don't really care about the specific survey responses that are present in pretty much all columns but the initial ones, I can say that we can exclude them. Moreover, since it would be great to match performance and perception of school quality to the SAT scores, we can exclude Elementary and Middle Schools from the dataset. 
 
 ```{r}
+unique(general$schooltype)
+```
+We are going to keep only "Middle / High School", "High School", ""Elementary / Middle / High School".
+
+In the d75 dataset the `schooltype` column has a unique value:
+```{r}
+unique(district$schooltype)
+```
+This value might refer to either elementary school of high school. So, for now, we are going to keep every row, and do the necessary cleaning later on.
+
+
+You can find the code of the "reductions" in `src/00-data-processing.r` under the CLEANING comment.
+
+```{r}
+dim(combined_reduced)
 dim(general_reduced)
 dim(district_reduced)
 ```
-Now we are dealing with a feasible number of variables
 
+Now we are dealing with a feasible number of variables and they are closer to what we really need.
 
+### Inspecting NA values
+
+```{r}
+colSums(is.na(combined_reduced))
+colSums(is.na(general_reduced))
+colSums(is.na(district_reduced))
+```
 
 
 
