@@ -24,14 +24,15 @@ colnames(combined_reduced) <- colnames(combined_reduced) %>% str_to_lower()
 survey <- bind_rows(general_reduced, district_reduced)
 
 # removing columns after NA-value inspection
-survey <- survey %>% select(-highschool)
-combined_reduced <- combined_reduced %>% select(c(-number.of.exams.with.scores.3.4.or.5, high_score_percent))
+survey_2 <- survey %>% select(-highschool)
+combined_reduced_2 <- combined_reduced %>% select(c(-number.of.exams.with.scores.3.4.or.5, high_score_percent))
 
 # joining data frames
-school_data_raw <- combined_reduced %>% left_join(survey, by = "dbn")
+school_data_raw <- combined_reduced_2 %>% left_join(survey_2, by = "dbn")
 # final cleaning
 school_data <- school_data_raw %>%
-  select(c(-bn, -schoolname, -schooltype, -studentssurveyed))
+  select(c(-bn, -schoolname, -schooltype, -studentssurveyed)) %>% 
+  distinct(dbn, .keep_all = TRUE)
 
 #saving dataset in project folder
 write.csv(school_data, "~/nyc-schools-survey-analysis/data/clean-data/school-data.csv")

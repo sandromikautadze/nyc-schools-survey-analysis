@@ -14,6 +14,7 @@ output:
 
 ```{r setup, include=FALSE}
 source("src/00-data-processing.r", local = knitr::knit_global())
+source("src/01-data-analysis.r", local = knitr::knit_global())
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -32,7 +33,9 @@ This is a TLDR. Enjoy!
 In `data\raw-data` 5 files are available: **combined.csv**, **masterfile11_gened_final.txt**, **masterfile11_gened_final.xlsx**, **masterfile11_d75_final.txt** and **masterfile11_d75_final.xlsx**.
 
 These files have been downloaed from the following links:
+
 - https://data.cityofnewyork.us/Education/2011-NYC-School-Survey/mnz3-dyi8 [last visited July 7th, 2022]
+
 - https://data.world/dataquest/nyc-schools-data/workspace/file?filename=combined.csv) [last visited Julty 13th, 2022]
 
 From the *Survey-Data-Dictionary* file in `data\metadata` we can notice that **masterfile11_gened_final** and **masterfile11_d75_final** differ by a small aspect: **gened** contains information on all community schools, while **d75** from all District 75 schools, that is schools designed to teach and help students with disabilities.
@@ -53,14 +56,21 @@ dim(district)
 ```
 Looking at the Survey Dictionary we can notice that the first columns indicate somecharacteristics of the school (we'll get into that later).
 After that, there are some columns that contain aggregate data on the survey. We can identify three groups that responded to the survey:
+
 - Students, encoded by `s`
+
 - Teachers, encoded by `t`
+
 - Parents, encoded by `p`
 
 They were asked questions on 4 main categories:
+
 - Safety and Respect, encoded by `saf`
+
 - Communication, encoded by `com`
+
 - Engagement, encoded by `eng`
+
 - Academic expectations, encoded by `aca`
 
 In addition those columns contain at the end a number: 11. We need to be aware of the fact that in the dictionary, that number is 10; so it might represent the year. 
@@ -119,8 +129,8 @@ In addition, `combined_reduced` has `number.of.exams.with.scores.3.4.or.5` and `
 
 The final dimensions of the cleaned datasets are the following:
 ```{r}
-dim(combined_reduced)
-dim(survey)
+dim(combined_reduced_2)
+dim(survey_2)
 ```
 
 ## Joining the Datasets
@@ -133,6 +143,12 @@ dim(school_data_raw)
 ```
 We can eliminate some redundant columns, such `bn` and `schoolname`. In addition, we now know that we are dealing with high schools, so we can drop `schooltype` and `studentssurveyed`.
 
+We can also notice that there is an duplicated value in the schools
+```{r}
+sum(duplicated(school_data_raw$dbn))
+```
+So we will remove that duplicate as well.
+
 ## Final Dataset
 
 Therefore our final cleaned dataset, named `school_data` is the following:
@@ -141,9 +157,69 @@ glimpse(school_data)
 ```
 You can find the cleaned dataset in `data/clean-data/school-data.csv`.
 
+\newpage
+
 # Data Analysis
 
-## Recalling the Goal of the Project
+I will divide this section in two parts: one for each question we have to address.
+
+## Do student, teacher and parent perceptions of NYC school quality appear to be related to demographic and academic success metrics?
+
+**Demographic metrics**
+
+In the dataset we have observations on the latitude, longitude and borough. For our purposes the borough is enough, as the latitude and longitude provide overly detailed information on the position of the school.
+
+Area |	Median Household Income (USD) |	Mean Household Income (USD)	 | Percentage in Poverty |
+
+The Bronx	| 34,156	| 46,298	| 27.1% |
+
+Brooklyn |	41,406 |	60,020 |	21.9% |
+
+Manhattan |	64,217 |	121,549 |	17.6% |
+
+Queens |	53,171 |	67,027 |	12.0% |
+
+Staten Island |	66,985 |	81,498 |	9.8% |
+
+**Academic success metrics**
+
+In the dataset we have many data points on SAT results and class information. To properly address the question, we will consider as a metric the average SAT score. I decide to keep other details like the column of the ethnities at school and 
+
+- `frl_percent`: percentage of a school's students eligible for receiving school lunch at a discount based on household income
+
+- `ell_percent`: percentage of a school's students who are learning to speak English
+
+- `sped_percent`: percentage of a school's students who receive specialized instruction to accommodate special needs such as learning or physical disabilities
+
+They could provide more insights.
+
+I decide to remove some other columns that might be useless (see code for more info).
+
+I will create new columns:
+
+- `avg_p`, `avg_t` and `avg_s` to indicate the average score on the different questions type that each group answered to
+- `avg_saf`, `avg_com`, `avg_eng` and `avg_aca` to indicate the average score on the average satisfaction on the different categories by all groups.
+
+Our processed dataset for the question is now the following
+```{r}
+glimpse(school_data_q1)
+```
+
+**Academic metrics**
+
+We create the correlation matrix, keeping only correlation values that are greater than 0.25 or less than -0.25. By doing so we qualify a correlation as potentially interesting and worthy of further investigation.
+
+## Do students, teachers, and parents have similar perceptions of NYC school quality?
+
+Graph1 
+Graph2
+Analyze
+
+
+# Findings
+
+Bla bla bla
+
 
 
 
