@@ -2,10 +2,8 @@ library(tidyverse)
 
 school_data <- read.csv("~/nyc-schools-survey-analysis/data/clean-data/school-data.csv")
 
-# QUESTION 1 (q1)
-
-# creating a dataset with necessary info for q1
-school_data_q1 <- school_data %>% 
+# PROCESSING dataset with necessary info for q1 and q2
+school_data_question <- school_data %>% 
   select(c(-X, -num.of.sat.test.takers, -c(6:9), -total_enrollment, -selfcontained_num, -total.cohort, -lat, -long, -d75, -c(41:44))) %>% # removing unnecessary columns
   rowwise() %>% 
   mutate(
@@ -18,22 +16,24 @@ school_data_q1 <- school_data %>%
     avg_aca = mean(c_across(starts_with("aca")), 1), #average aca score
   )
 
+# QUESTION 1 (q1)
 
-#Academic relationships
+#correlation matrix (converted as data frame)
+cor_df <- school_data_question %>% 
+  select(where(is.numeric)) %>%
+  cor(use = "pairwise.complete.obs") %>%
+  round(3) %>% 
+  as_tibble(rownames = "variable") %>% 
+  select(variable,avg_sat_score) %>% 
+  filter(avg_sat_score >= 0.2 | avg_sat_score <= -0.2)
 
-#correlation matrix (converted as tibble)
-#cor_df <- school_data_q1 %>% 
-# select(avg_sat_score, 17:28) %>% # including SAT score and survey responses
-#cor(use = "pairwise.complete.obs") %>%
-#as_tibble(rownames = "variable") %>% 
-#filter(avg_sat_score < -0.25 | avg_sat_score > 0.25)
 #create scatter and investigate
 
 
 # Question2 (q2)
 
 #graphs
-graph1 <- school_data_q1 %>%
+graph1 <- school_data_question %>%
   drop_na(boro) %>%
   pivot_longer(cols = 29:31,
                names_to = "avg_group",
@@ -41,7 +41,7 @@ graph1 <- school_data_q1 %>%
   ggplot(aes(x = boro, y = values, fill = avg_group)) +
   geom_boxplot() +
   labs(
-    title = "Average perception on safety, respect, communication, engagement and academic expectations on NYC schools",
+    title = "Average perception on safety, respect, communication, engagement and\nacademic expectations on NYC schools",
     x = "Borough",
     y = "Response (0-10)"
   ) +
@@ -52,7 +52,7 @@ graph1 <- school_data_q1 %>%
     labels = c("Parents", "Teachers", "Students")
   )
 
-graph2 <- school_data_q1 %>%
+graph2 <- school_data_question %>%
   drop_na(boro) %>%
   pivot_longer(cols = 32:35,
                names_to = "avg_category",
@@ -60,7 +60,7 @@ graph2 <- school_data_q1 %>%
   ggplot(aes(x = boro, y = values, fill = avg_category)) +
   geom_boxplot() +
   labs(
-    title = "Average perception by parents, teachers and students on different aspects of NYC schools",
+    title = "Average perception by parents, teachers and students on different aspects\nof NYC schools",
     x = "Borough",
     y = "Response (0-10)"
   ) +
@@ -70,3 +70,4 @@ graph2 <- school_data_q1 %>%
     breaks = c("avg_saf", "avg_com", "avg_eng", "avg_aca"),
     labels = c("Safety and Respect", "Communication", "Engagement", "Academic Expectations")
   )
+

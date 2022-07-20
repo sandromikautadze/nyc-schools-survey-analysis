@@ -163,27 +163,26 @@ You can find the cleaned dataset in `data/clean-data/school-data.csv`.
 
 I will divide this section in two parts: one for each question we have to address.
 
-## Do student, teacher and parent perceptions of NYC school quality appear to be related to demographic and academic success metrics?
+1. Do student, teacher and parent perceptions of NYC school quality appear to be related to demographic and academic success metrics?
 
-**Demographic metrics**
+2. Do students, teachers, and parents have similar perceptions of NYC school quality?
 
-In the dataset we have observations on the latitude, longitude and borough. For our purposes the borough is enough, as the latitude and longitude provide overly detailed information on the position of the school.
+## Question 1
 
-Area |	Median Household Income (USD) |	Mean Household Income (USD)	 | Percentage in Poverty |
+For demographics metrics, in the dataset we have observations on the latitude, longitude and borough and race (*btw, this is an American thing... that's really racist. No wonder America is one of the most racist countries in the world!*). For our purposes the borough is enough, as the latitude and longitude provide overly detailed information on the position of the school. Here is some information.
 
-The Bronx	| 34,156	| 46,298	| 27.1% |
+```{r echo=FALSE}
+area <- c("Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Islands")
+med <- c(34156, 41406, 64217, 53171, 66985)
+mea <- c(46,298, 46,298, 121,549, 67,027, 81,498)
+per <- c(27.1, 21.9, 17.6, 12.0, 9.8)
+tab <- data.frame(area, med, mea, per)
+colnames(tab) <- c("Area", "Median Household Income (USD)", "Mean Household Income (USD)", "Percentage in Poverty (%)")
+tab[1:5,]
+```
 
-Brooklyn |	41,406 |	60,020 |	21.9% |
 
-Manhattan |	64,217 |	121,549 |	17.6% |
-
-Queens |	53,171 |	67,027 |	12.0% |
-
-Staten Island |	66,985 |	81,498 |	9.8% |
-
-**Academic success metrics**
-
-In the dataset we have many data points on SAT results and class information. To properly address the question, we will consider as a metric the average SAT score. I decide to keep other details like the column of the ethnities at school and 
+For academic metrics, in the dataset we have many data points on SAT results and class information. To properly address the question, we will consider as a metric the average SAT score. I also decide to keep other details like: 
 
 - `frl_percent`: percentage of a school's students eligible for receiving school lunch at a discount based on household income
 
@@ -195,31 +194,59 @@ They could provide more insights.
 
 I decide to remove some other columns that might be useless (see code for more info).
 
-I will create new columns:
+I will also create new columns:
 
 - `avg_p`, `avg_t` and `avg_s` to indicate the average score on the different questions type that each group answered to
 - `avg_saf`, `avg_com`, `avg_eng` and `avg_aca` to indicate the average score on the average satisfaction on the different categories by all groups.
 
 Our processed dataset for the question is now the following
 ```{r}
-glimpse(school_data_q1)
+glimpse(school_data_question)
 ```
 
-**Academic metrics**
+From here we proceed constructing the correlation matrix keeping only values with correlation $|r| \ge0.2$.
+```{r}
+cor_df
+```
 
-We create the correlation matrix, keeping only correlation values that are greater than 0.25 or less than -0.25. By doing so we qualify a correlation as potentially interesting and worthy of further investigation.
 
-## Do students, teachers, and parents have similar perceptions of NYC school quality?
+## Question 2
 
-Graph1 
-Graph2
-Analyze
+Still using the previous dataset, we can plot some graphs to easily address this question.
+
+**NOTE** You can visualize the graph also in the `output-graphics` folder.
+
+This is the first graph:
+```{r echo=FALSE}
+plot(graph1)
+```
+
+While this is the second graph:
+```{r, echo=FALSE}
+plot(graph2)
+```
 
 
 # Findings
 
-Bla bla bla
+## Question 1
+
+## Question 2
+The answer to the question seems easy: no.
+
+From Graph 1 we can notice than on average the perception on parent in all boroughs is higher than that of students and teachers. 
+In addition there seems to be a recurring trend: as the borough's poverty decreases, the parent's satisfaction mean decreases, the teacher's increases and that of students remains pretty much constant.
+Other inferences could be drawn from Graph 1, but it's summer and really hot, so sorry for the inconvenience.
+
+As far as Graph 2 goes, we seem to have a pretty common mean for academic expectations in all boroughs. And it is the highest.
+The safety and respect is the most fluctuating category. 
+
+Overall, in both graphs, the Staten Island is the less distributed borough in terms of scores. Most values are concentrated around the mean. Instead, for the other boroughs we have 50% of the data between $\pm 0.5$.
 
 
 
+If you've been careful enough, I have never drawn any causal connection so far. I just stated facts. It's not my job to find causal connections between human perceptions and data. Sorry.
 
+
+
+RIVEDI FINDINGS!!!
