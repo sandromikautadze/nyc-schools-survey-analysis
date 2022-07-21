@@ -40,7 +40,7 @@ After cleaning the data and optimizing it for the research question -- see code 
 
 * Improve the data analysis workflow
 
-* Conduct basic statistical analysis
+* Conduct basic analysis using statistical and graphical methods
 
 * Other things that I don't remember now
 

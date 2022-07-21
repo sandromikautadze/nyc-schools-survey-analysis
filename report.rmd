@@ -161,13 +161,11 @@ You can find the cleaned dataset in `data/clean-data/school-data.csv`.
 
 # Data Analysis
 
-I will divide this section in two parts: one for each question we have to address.
+The questions are the following:
 
 1. Do student, teacher and parent perceptions of NYC school quality appear to be related to demographic and academic success metrics?
 
 2. Do students, teachers, and parents have similar perceptions of NYC school quality?
-
-## Question 1
 
 For demographics metrics, in the dataset we have observations on the latitude, longitude and borough and race (*btw, this is an American thing... that's really racist. No wonder America is one of the most racist countries in the world!*). For our purposes the borough is enough, as the latitude and longitude provide overly detailed information on the position of the school. Here is some information.
 
@@ -210,28 +208,10 @@ cor_df
 ```
 
 
-## Question 2
-
-Still using the previous dataset, we can plot some graphs to easily address this question.
-
-**NOTE** You can visualize the graph also in the `output-graphics` folder.
-
-This is the first graph:
-```{r echo=FALSE}
-plot(graph1)
-```
-
-While this is the second graph:
-```{r, echo=FALSE}
-plot(graph2)
-```
-
+Still using the previous dataset, we can plot some graphs. You can visualize the graphs in the correct format in the `output-graphics` folder.
 
 # Findings
 
-## Question 1
-
-## Question 2
 The answer to the question seems easy: no.
 
 From Graph 1 we can notice than on average the perception on parent in all boroughs is higher than that of students and teachers. 
