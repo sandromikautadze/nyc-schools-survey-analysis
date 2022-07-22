@@ -28,7 +28,7 @@ If you want to carefully know the data cleaning process, the motivations behind 
 
 ## Exploration and Findings - Summary
 
-The datasets contained information schools' demographics and various indicator of academic performance, like the average SAT score in each school. I also had data on responses to surveys designed to gauge parent, student, and teacher perceptions of the quality of New York City schools.
+The datasets contained information on schools' demographics and various indicators of academic performance, like the average SAT score in each school. I also had data on responses to surveys designed to gauge parent, student, and teacher perceptions of the quality of New York City schools.
 
 After cleaning the data and optimizing it for the research question -- see code for more info -- I went on with the analysis.
 
