@@ -22,6 +22,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This is a TLDR. Enjoy!
 
+## Research Questions
+
 - Do student, teacher and parent perceptions of NYC school quality appear to be related to demographic and academic success metrics? 
 
 - Do students, teachers, and parents have similar perceptions of NYC school quality?
@@ -41,7 +43,7 @@ These files have been downloaed from the following links:
 From the *Survey-Data-Dictionary* file in `data\metadata` we can notice that **masterfile11_gened_final** and **masterfile11_d75_final** differ by a small aspect: **gened** contains information on all community schools, while **d75** from all District 75 schools, that is schools designed to teach and help students with disabilities.
 As the Dictionary states, "these files display one line of information for each school, by DBN, that includes the response rate for each school, the number of surveys submitted, the size of the eligible survey population at each school, question scores, the percentage of responses selected, and the count of responses selected".
 
-Both files come with two different formats: *.txt* and *.xlsx*. I decide to work working with *.txt*, because the Excel version requires paid software to be visualized (i.e. Microsoft Excel). Having a look at the *.txt* datasets, we can notice that they are actually saved as tsv (tab separated value) files.
+Both files come with two different formats: *.txt* and *.xlsx*. I decide to work with *.txt*, because the Excel version requires paid software to be visualized (i.e. Microsoft Excel). Having a look at the *.txt* datasets, we can notice that they are actually saved as *.tsv* (tab separated value) files.
 
 The **combined** dataset has been pre-cleaned as an exercise and contains combined information on different NYC schools based on SAT, AP scores and geographical data.
 
@@ -54,7 +56,7 @@ dim(combined)
 dim(general)
 dim(district)
 ```
-Looking at the Survey Dictionary we can notice that the first columns indicate somecharacteristics of the school (we'll get into that later).
+Looking at the Survey Dictionary we can notice that the first columns indicate some characteristics of the school (we'll get into those later in the report).
 After that, there are some columns that contain aggregate data on the survey. We can identify three groups that responded to the survey:
 
 - Students, encoded by `s`
@@ -63,7 +65,7 @@ After that, there are some columns that contain aggregate data on the survey. We
 
 - Parents, encoded by `p`
 
-They were asked questions on 4 main categories:
+In addition, each group was asked questions on 4 main categories:
 
 - Safety and Respect, encoded by `saf`
 
@@ -73,13 +75,13 @@ They were asked questions on 4 main categories:
 
 - Academic expectations, encoded by `aca`
 
-In addition those columns contain at the end a number: 11. We need to be aware of the fact that in the dictionary, that number is 10; so it might represent the year. 
+Those columns contain at the end the 11. We need to be aware of the fact that in the dictionary, that number is 10; so it might represent the year of data collection. This is still non influencing the analysis, so we will discard this detail. 
 
 **EXAMPLE**: `eng_p_11` indicates the engagement score collected in 2011 based on the parent responses.
 
 After the above described columns, we have thousands of columns on the precise survey question and answers. 
 
-As far as `combined` goes, we mainly have data on SAT scores with some other info on the different groups of people attending the school, the school's position, the class size, etc. Overall, all these pieces of information might come useful, so I decide to perform no cleaning.
+As far as `combined` goes, we mainly have data on SAT scores with some other info on the different groups of people attending the school, the school's position, the class size, etc.
 
 ## Raw Data Cleaning
 
@@ -94,7 +96,7 @@ In the d75 dataset the `schooltype` column has a unique value:
 ```{r}
 unique(district$schooltype)
 ```
-This value might refer to either elementary school of high school.
+This value might refer either to elementary school or to high school.
 In this case the `studentsurveyed` column can help us, because, as written in the dictionary, "This field indicates whether or not this school serves any students in grades 6-12". The values that the column takes are the following:
 ```{r}
 unique(district$studentssurveyed)
@@ -125,7 +127,7 @@ colSums(is.na(survey))
 
 The first thing that we can notice is that the `highschool` column in the survey dataframe has 424 NA values, out of 438 observations. This means that that column is pretty much unusable, so we will delete it. 
 
-In addition, `combined_reduced` has `number.of.exams.with.scores.3.4.or.5` and `high_score_percent` with 328 NA values, which is more than half of the rows in the dataset. So, it is safe to safe that those columns are useless and we will delete them.
+In addition, `combined_reduced` has `number.of.exams.with.scores.3.4.or.5` and `high_score_percent` with 328 NA values, which is more than half of the rows in the dataset. So, it is safe to assume that those columns are useless and we will delete them.
 
 The final dimensions of the cleaned datasets are the following:
 ```{r}
@@ -167,7 +169,7 @@ The questions are the following:
 
 2. Do students, teachers, and parents have similar perceptions of NYC school quality?
 
-For demographics metrics, in the dataset we have observations on the latitude, longitude and borough and race (*btw, this is an American thing... that's really racist. No wonder America is one of the most racist countries in the world!*). For our purposes the borough is enough, as the latitude and longitude provide overly detailed information on the position of the school. Here is some information.
+For demographics metrics, in the dataset we have observations on the latitude, longitude and borough and race (*btw, this is an American thing... that's really racist. No wonder America is one of the most racist countries in the world!*). For our purposes the borough is enough, as the latitude and longitude provide overly detailed information on the position of the school. Here is some information on the boroughs that might be useful to understand their differences.
 
 ```{r echo=FALSE}
 area <- c("Bronx", "Brooklyn", "Manhattan", "Queens", "Staten Islands")
@@ -212,21 +214,49 @@ Still using the previous dataset, we can plot some graphs. You can visualize the
 
 # Findings
 
+## Do student, teacher and parent perceptions of NYC school quality appear to be related to demographic and academic success metrics?
+
+From `sat-borough` graph we can notice the average SAT score in each borough. In increasing order, we have Bronx (1153), Brooklyn (1178), Manhattan (1291), Queens (1292), Staten Island (1383). 
+First thing to notice: the poorer the borough, the lower the average SAT score in that borough. Refer to table in Section 3 for more info.
+
+Inspecting graph `response-borough-per-category` we can identify some patterns.
+
+- "Safety and respect" appears the less constant category on average and no true intuitive relationship can be found at first sight.
+
+- Communication increases in mean as the borough has a higher average SAT score.
+
+- Engagement has a pretty equal mean and distribution for the first four boroughs, but the mean increases in Staten Islands. This pattern can also slightly be identified in communication.
+
+- Academic expectation seems to have a common mean across all boroughs.
+
+Staten Island, though, seems to be the borough with the most skewed data. For academic expectation most responses aggregate around the mean. Whereas for communication and engagement 50% of the data differs by one point (which is a lot).
+
+In addition, looking at the the graphs starting with `sat-vs` we can notice that there is some correlation between SAT score and teacher safety perception (0.309), student academic expectation perception (0.293) and student safety perception (0.277).
+
+This is not really useful but draws some interesting insights that would require further investigation.
+
+Overall, even though some patterns can be found, I believe that they are not that meaningful for "poorer" boroughs. Instead, there seems to be some slight shift between Staten Island and the others in school perception. In the end, the change is so small that drawing further conclusions might not be appropriate.
+
+So, to answer the question, the data suggests some slight relationship and to better address the question some further investigation would be necessary. 
+
+## Do students, teachers, and parents have similar perceptions of NYC school quality?
+
+We can have a look at the graph called `response-borough-per-group`. The first impression is that they have completely different opinions. Overall, parents appear more satisfied than teachers, who seem more satisfied than students.
+
 The answer to the question seems easy: no.
 
-From Graph 1 we can notice than on average the perception on parent in all boroughs is higher than that of students and teachers. 
-In addition there seems to be a recurring trend: as the borough's poverty decreases, the parent's satisfaction mean decreases, the teacher's increases and that of students remains pretty much constant.
-Other inferences could be drawn from Graph 1, but it's summer and really hot, so sorry for the inconvenience.
+But in addition, we can find some trends. As the borough gets less poor, parent satisfaction decreases in mean (note that Staten Island has most of its scores concentrated around the mean here as well!). Instead, teacher's satisfaction increases! This might be because of better working conditions (?) but it would require more data on that. On the other hand, students perceptions seem pretty stable (and low), regardless of the borough and some score fluctuations. 
 
-As far as Graph 2 goes, we seem to have a pretty common mean for academic expectations in all boroughs. And it is the highest.
-The safety and respect is the most fluctuating category. 
+**Should we conclude that students hate school...?!**
 
-Overall, in both graphs, the Staten Island is the less distributed borough in terms of scores. Most values are concentrated around the mean. Instead, for the other boroughs we have 50% of the data between $\pm 0.5$.
+## Final Personal Remark
 
+I have not drawn any causal connection. I just stated relationships and facts. It is not my aim to seek motivations behind the correlation of events. If you feel like doing it, be free to do it.
 
+# Methods of Improvement
 
-If you've been careful enough, I have never drawn any causal connection so far. I just stated facts. It's not my job to find causal connections between human perceptions and data. Sorry.
-
+Too many to write down :)
 
 
-RIVEDI FINDINGS!!!
+
+

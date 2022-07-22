@@ -32,17 +32,18 @@ The datasets contained information schools' demographics and various indicator o
 
 After cleaning the data and optimizing it for the research question -- see code for more info -- I went on with the analysis.
 
-[to be continued]
+As far as the first question goes, I concluded that there seems to be some slight correlation, but further investigation would be required.
+For the second question, the answer is no. Parents have a better perception than teachers, who have a better perception than students. In simple words, parents love school; students hate it; teacher simply do their job.
 
 ## Learning Objectives
 
-* Practice data cleaning with real-word messy dataset
+* Practicing data cleaning with real-word messy dataset
 
-* Improve the data analysis workflow
+* Improving the data analysis workflow
 
-* Conduct basic analysis using statistical and graphical methods
+* Conducting basic analysis using statistical and graphical methods
 
-* Other things that I don't remember now
+* Many other things
 
 ## Useful links
 
