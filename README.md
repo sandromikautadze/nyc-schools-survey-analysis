@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project addresses the following questions: 
+This is a data science project which addresses the following questions: 
 
 * Do student, teacher and parent perceptions of NYC school quality appear to be related to demographic and academic success metrics? 
 
@@ -33,7 +33,7 @@ The datasets contained information on schools' demographics and various indicato
 After cleaning the data and optimizing it for the research question -- see code for more info -- I went on with the analysis.
 
 As far as the first question goes, I concluded that there seems to be some slight correlation, but further investigation would be required.
-For the second question, the answer is no. Parents have a better perception than teachers, who have a better perception than students. In simple words, parents love school; students hate it; teacher simply do their job.
+For the second question, the answer is no. Parents have a better perception than teachers, who have a better perception than students. In simple words, parents love school; students hate it; teachers simply do their job.
 
 ## Learning Objectives
 
